@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>InsightED URS Explorer</title>
+  <!-- FontAwesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <!-- Core Stylesheet -->
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <div class="app-container">
+    
+    <!-- Sidebar: Project List & Global Search -->
+    <aside class="sidebar">
+      <div class="sidebar-header">
+        <div class="logo-icon">
+          <i class="fa-solid fa-graduation-cap"></i>
+        </div>
+        <span class="logo-text">InsightED URS</span>
+        <a id="syncStatus" href="https://docs.google.com/spreadsheets/d/1HZqDgvoVPjf7qCjIgKpdSszOmqw_H0OhLmEJFE7yGCY/edit?resourcekey=&gid=1430583728#gid=1430583728" target="_blank" class="sync-status" title="View Google Sheet (Syncing live...)">
+          <i class="fa-solid fa-arrows-rotate fa-spin"></i>
+        </a>
+      </div>
+      
+      <div class="sidebar-search">
+        <i class="fa-solid fa-magnifying-glass"></i>
+        <input type="text" id="projectSearch" class="search-input" placeholder="Search systems / fields...">
+      </div>
+      
+      <div class="project-list-container">
+        <div class="section-label">User Specifications</div>
+        <div id="projectList" class="project-list">
+          <!-- Populated dynamically via JS -->
+        </div>
+      </div>
+    </aside>
+
+    <!-- Main Content Workspace -->
+    <main class="main-workspace">
+      
+      <!-- Premium Decorative Background Spheres -->
+      <div class="glass-sphere sphere-1"></div>
+      <div class="glass-sphere sphere-2"></div>
+
+      <!-- Welcome / Empty State (Shown initially) -->
+      <section id="emptyState" class="empty-state">
+        <div class="empty-state-icon">
+          <i class="fa-solid fa-folder-open"></i>
+        </div>
+        <h1 class="empty-state-title">InsightED URS Explorer</h1>
+        <p class="empty-state-desc">
+          Welcome to the DepEd User Requirements Specification (URS) Hub. Select a project specification card from the sidebar to explore detailed system flows, user responsibilities, pain points, and data validation matrices.
+        </p>
+        <div class="info-grid">
+          <div class="info-stat-card">
+            <div class="info-stat-val">2</div>
+            <div class="info-stat-lbl">PROJECTS</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Active Workspace: Project View (Populated dynamically) -->
+      <section id="activeWorkspace" class="workspace-content" style="display: none;">
+        
+        <!-- Workspace Header -->
+        <header class="workspace-header">
+          <div class="workspace-title-area">
+            <span class="project-badge">URS Complete</span>
+            <h2 id="workspaceTitle" class="workspace-title">NOSCA ISSUANCE TRACKER</h2>
+          </div>
+          <div class="workspace-actions">
+            <a href="https://docs.google.com/spreadsheets/d/1HZqDgvoVPjf7qCjIgKpdSszOmqw_H0OhLmEJFE7yGCY/edit?resourcekey=&gid=1430583728#gid=1430583728" target="_blank" class="btn btn-secondary">
+              <i class="fa-solid fa-file-excel"></i> Open Google Sheet
+            </a>
+            <button id="btnPrint" class="btn btn-primary">
+              <i class="fa-solid fa-print"></i> Print Specification
+            </button>
+          </div>
+        </header>
+
+        <!-- Workspace Scrollable Body -->
+        <div class="workspace-body">
+          
+          <!-- Primary Purpose & Description -->
+          <div class="purpose-card">
+            <div class="purpose-header">
+              <i class="fa-solid fa-bullseye"></i> Purpose & Scope of the Project
+            </div>
+            <p id="workspacePurpose" class="purpose-desc">
+              CO monitoring of the NOSCA issuance of DBM to DepEd field offices and IUs
+            </p>
+            <div class="submitter-info">
+              <i class="fa-solid fa-user-tie"></i> Submitted by: <span id="workspaceSubmitter">noverose.dadole@deped.gov.ph</span>
+            </div>
+          </div>
+
+          <!-- Requirements Detail Tabs Section -->
+          <div class="tab-section-header">
+            <nav id="tabNav" class="tab-nav">
+              <button class="tab-btn active" data-category="overview">
+                <i class="fa-solid fa-chart-line"></i> Overview & Goals
+              </button>
+              <button class="tab-btn" data-category="users">
+                <i class="fa-solid fa-users-gear"></i> Users & Process
+              </button>
+              <button class="tab-btn" data-category="painPoints">
+                <i class="fa-solid fa-triangle-exclamation"></i> Pain Points
+              </button>
+              <button class="tab-btn" data-category="systemCapabilities">
+                <i class="fa-solid fa-sliders"></i> Capabilities
+              </button>
+              <button class="tab-btn" data-category="dataValidation">
+                <i class="fa-solid fa-database"></i> Data & Quality
+              </button>
+            </nav>
+            
+            <div class="requirements-search">
+              <i class="fa-solid fa-filter"></i>
+              <input type="text" id="requirementSearch" class="search-requirements-input" placeholder="Filter this tab...">
+            </div>
+          </div>
+
+          <!-- Requirements Cards Grid -->
+          <div id="requirementsGrid" class="requirements-grid">
+            <!-- Dynamic requirement cards will render here -->
+          </div>
+
+        </div>
+
+      </section>
+
+    </main>
+
+  </div>
+
+  <!-- JavaScript Modules -->
+  <script src="data.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
