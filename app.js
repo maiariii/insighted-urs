@@ -27,6 +27,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const requirementsGrid = document.getElementById("requirementsGrid");
   const btnPrint = document.getElementById("btnPrint");
   const syncStatus = document.getElementById("syncStatus");
+  const logoBrand = document.getElementById("logoBrand");
 
   // --- Category Icons Mapping ---
   const iconMapping = {
@@ -424,6 +425,14 @@ document.addEventListener("DOMContentLoaded", () => {
   // Print button listener
   btnPrint.addEventListener("click", () => {
     window.print();
+  });
+
+  // Reset to Landing Page when clicking logo brand
+  logoBrand.addEventListener("click", () => {
+    selectedProjectId = null;
+    renderSidebar(); // Rerender so no card is highlighted active
+    activeWorkspaceSection.style.display = "none";
+    emptyStateSection.style.display = "flex";
   });
 
   // --- Initial Launch Setup ---

@@ -115,6 +115,23 @@ body {
   color: var(--color-rose);
 }
 
+.logo-brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  cursor: pointer;
+  transition: var(--transition-smooth);
+}
+
+.logo-brand:hover {
+  opacity: 0.85;
+  transform: scale(1.02);
+}
+
+.logo-brand:active {
+  transform: scale(0.98);
+}
+
 .logo-icon {
   background: linear-gradient(135deg, var(--color-indigo), var(--color-emerald));
   width: 40px;
