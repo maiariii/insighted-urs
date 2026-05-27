@@ -204,10 +204,10 @@ document.addEventListener("DOMContentLoaded", () => {
     // Show active syncing status
     syncStatus.className = "sync-status";
     syncStatus.innerHTML = `<i class="fa-solid fa-arrows-rotate fa-spin"></i>`;
-    syncStatus.title = "View Google Sheet (Syncing live...)";
+    syncStatus.title = "Syncing live with Google Sheet...";
 
     try {
-      const response = await fetch(SHEET_CSV_URL);
+       const response = await fetch(SHEET_CSV_URL);
       if (!response.ok) {
         throw new Error(`HTTP Error Status: ${response.status}`);
       }
@@ -222,7 +222,7 @@ document.addEventListener("DOMContentLoaded", () => {
         // Show success status
         syncStatus.className = "sync-status success";
         syncStatus.innerHTML = `<i class="fa-solid fa-cloud-arrow-up" style="color: var(--color-emerald);"></i>`;
-        syncStatus.title = "Synced live with Google Sheet! Click to open.";
+        syncStatus.title = "Synced live with Google Sheet!";
         
         // Update welcome panel indicators
         updateWelcomeStats(liveProjects.length);
@@ -235,7 +235,7 @@ document.addEventListener("DOMContentLoaded", () => {
       // Update sync status indicator to show fallback/offline status
       syncStatus.className = "sync-status error";
       syncStatus.innerHTML = `<i class="fa-solid fa-cloud-arrow-down" style="color: var(--color-amber);"></i>`;
-      syncStatus.title = "Sync failed. Loaded fallback offline data. Click to open.";
+      syncStatus.title = "Sync failed. Loaded fallback offline data.";
       
       // Ensure we keep preloaded local fallback data loaded
       if (window.projectsData && window.projectsData.length > 0) {
@@ -251,7 +251,9 @@ document.addEventListener("DOMContentLoaded", () => {
   function updateWelcomeStats(projectCount) {
     const statsVals = document.querySelectorAll(".info-stat-val");
     if (statsVals.length > 0) {
-      statsVals[0].textContent = projectCount;
+      statsVals.forEach(val => {
+        val.textContent = projectCount;
+      });
     }
   }
 
@@ -298,7 +300,7 @@ document.addEventListener("DOMContentLoaded", () => {
       card.addEventListener("click", () => {
         selectProject(project.id);
       });
-
+ 
       projectListContainer.appendChild(card);
     });
   }
@@ -381,7 +383,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     filteredFields.forEach(field => {
       const card = document.createElement("div");
-      card.className = "req-card";
+      card.className = `req-card cat-${activeCategory}`;
       
       const iconClass = iconMapping[field.key] || "fa-solid fa-circle-info";
       
@@ -424,6 +426,64 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Print button listener
   btnPrint.addEventListener("click", () => {
+    const project = window.projectsData.find(p => p.id === selectedProjectId);
+    if (!project) return;
+
+    const printContainer = document.getElementById("printContainer");
+    if (!printContainer) return;
+
+    // Define friendly category labels
+    const catLabels = {
+      overview: "Overview & Goals",
+      users: "Users & Process",
+      painPoints: "Pain Points",
+      systemCapabilities: "System Capabilities",
+      dataValidation: "Data & Quality Validation"
+    };
+
+    let html = `
+      <div class="print-header">
+        <h1 class="print-title">${project.title}</h1>
+        <div class="print-meta">
+          <strong>Submitted by:</strong> ${project.submitter}
+        </div>
+        <div class="print-purpose">
+          <strong>Purpose & Scope of the Project:</strong><br>
+          ${project.purpose}
+        </div>
+      </div>
+    `;
+
+    // Loop through all categories
+    for (const [catKey, fields] of Object.entries(project.categories)) {
+      if (!fields || fields.length === 0) continue;
+      
+      html += `
+        <div class="print-section">
+          <h2 class="print-section-title">${catLabels[catKey] || catKey}</h2>
+          <div class="print-grid">
+      `;
+
+      fields.forEach(field => {
+        const iconClass = iconMapping[field.key] || "fa-solid fa-circle-info";
+        html += `
+          <div class="print-card">
+            <div class="print-card-header">
+              <i class="${iconClass} print-card-icon"></i>
+              <span>${field.label}</span>
+            </div>
+            <div class="print-card-value">${formatValue(field.value)}</div>
+          </div>
+        `;
+      });
+
+      html += `
+          </div>
+        </div>
+      `;
+    }
+
+    printContainer.innerHTML = html;
     window.print();
   });
 
