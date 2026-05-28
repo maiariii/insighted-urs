@@ -1172,6 +1172,10 @@ body {
   transition: transform 0.2s;
 }
 
+.print-only {
+  display: none;
+}
+
 /* --- Optimized Media Queries for Printing (Full PDF Exports) --- */
 @media print {
   .app-container {
