@@ -4,7 +4,8 @@
 
 document.addEventListener("DOMContentLoaded", () => {
   // --- Configuration ---
-  const SHEET_CSV_URL = "https://docs.google.com/spreadsheets/d/1HZqDgvoVPjf7qCjIgKpdSszOmqw_H0OhLmEJFE7yGCY/export?format=csv&resourcekey=&gid=1430583728";
+  // Wrap the direct Google Sheets CSV URL in a CORS proxy (allorigins) to ensure browser sync succeeds
+  const SHEET_CSV_URL = "https://api.allorigins.win/raw?url=" + encodeURIComponent("https://docs.google.com/spreadsheets/d/1HZqDgvoVPjf7qCjIgKpdSszOmqw_H0OhLmEJFE7yGCY/export?format=csv&resourcekey=&gid=1430583728");
 
   // --- State Variables ---
   let selectedProjectId = null;
@@ -426,8 +427,68 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Print button listener
   btnPrint.addEventListener("click", () => {
-    const googleSheetPdfUrl = "https://docs.google.com/spreadsheets/d/1HZqDgvoVPjf7qCjIgKpdSszOmqw_H0OhLmEJFE7yGCY/export?format=pdf&gid=1430583728&size=letter&portrait=true&fitw=true&gridlines=false";
-    window.open(googleSheetPdfUrl, "_blank");
+    const project = window.projectsData.find(p => p.id === selectedProjectId);
+    if (!project) return;
+
+    const printContainer = document.getElementById("printContainer");
+    if (!printContainer) return;
+
+    // Define friendly category labels in order
+    const catLabels = {
+      overview: "Overview & Goals",
+      users: "Users & Process",
+      painPoints: "Pain Points",
+      systemCapabilities: "Capabilities",
+      dataValidation: "Data & Quality"
+    };
+
+    let html = `
+      <div class="print-header">
+        <h1 class="print-title">${project.title}</h1>
+        <div class="print-meta">
+          <strong>Submitted by:</strong> ${project.submitter}
+        </div>
+        <div class="print-purpose">
+          <strong>Purpose & Scope of the Project:</strong><br>
+          <p>${project.purpose}</p>
+        </div>
+      </div>
+    `;
+
+    // Loop through all categories in order
+    const orderedCategories = ["overview", "users", "painPoints", "systemCapabilities", "dataValidation"];
+    
+    for (const catKey of orderedCategories) {
+      const fields = project.categories[catKey];
+      if (!fields || fields.length === 0) continue;
+      
+      html += `
+        <div class="print-section">
+          <h2 class="print-section-title">${catLabels[catKey] || catKey}</h2>
+          <div class="print-grid">
+      `;
+
+      fields.forEach(field => {
+        html += `
+          <div class="print-card">
+            <h3 class="print-card-question">${field.label}</h3>
+            <div class="print-card-value">${formatValue(field.value)}</div>
+          </div>
+        `;
+      });
+
+      html += `
+          </div>
+        </div>
+      `;
+    }
+
+    printContainer.innerHTML = html;
+    
+    // Allow the browser layout engine to paint the DOM changes before invoking print
+    setTimeout(() => {
+      window.print();
+    }, 150);
   });
 
   // Reset to Landing Page when clicking logo brand
