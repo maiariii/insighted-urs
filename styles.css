@@ -1178,6 +1178,19 @@ body {
 
 /* --- Optimized Media Queries for Printing (Full PDF Exports) --- */
 @media print {
+  body {
+    background: #ffffff !important;
+    color: #000000 !important;
+    height: auto !important;
+    min-height: 100% !important;
+    overflow: visible !important;
+    display: block !important;
+  }
+
+  @page {
+    margin: 1.5cm;
+  }
+
   .app-container {
     display: none !important;
   }
