@@ -426,64 +426,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Print button listener
   btnPrint.addEventListener("click", () => {
-    const project = window.projectsData.find(p => p.id === selectedProjectId);
-    if (!project) return;
-
-    const printContainer = document.getElementById("printContainer");
-    if (!printContainer) return;
-
-    // Define friendly category labels
-    const catLabels = {
-      overview: "Overview & Goals",
-      users: "Users & Process",
-      painPoints: "Pain Points",
-      systemCapabilities: "System Capabilities",
-      dataValidation: "Data & Quality Validation"
-    };
-
-    let html = `
-      <div class="print-header">
-        <h1 class="print-title">${project.title}</h1>
-        <div class="print-meta">
-          <strong>Submitted by:</strong> ${project.submitter}
-        </div>
-        <div class="print-purpose">
-          <strong>Purpose & Scope of the Project:</strong><br>
-          ${project.purpose}
-        </div>
-      </div>
-    `;
-
-    // Loop through all categories
-    for (const [catKey, fields] of Object.entries(project.categories)) {
-      if (!fields || fields.length === 0) continue;
-      
-      html += `
-        <div class="print-section">
-          <h2 class="print-section-title">${catLabels[catKey] || catKey}</h2>
-          <div class="print-grid">
-      `;
-
-      fields.forEach(field => {
-        const iconClass = iconMapping[field.key] || "fa-solid fa-circle-info";
-        html += `
-          <div class="print-card">
-            <div class="print-card-header">
-              <i class="${iconClass} print-card-icon"></i>
-              <span>${field.label}</span>
-            </div>
-            <div class="print-card-value">${formatValue(field.value)}</div>
-          </div>
-        `;
-      });
-
-      html += `
-          </div>
-        </div>
-      `;
-    }
-
-    printContainer.innerHTML = html;
     window.print();
   });
 
