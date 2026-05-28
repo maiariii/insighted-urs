@@ -468,13 +468,9 @@ document.addEventListener("DOMContentLoaded", () => {
       `;
 
       fields.forEach(field => {
-        const iconClass = iconMapping[field.key] || "fa-solid fa-circle-info";
         html += `
           <div class="print-card">
-            <div class="print-card-header">
-              <i class="${iconClass} print-card-icon"></i>
-              <span>${field.label}</span>
-            </div>
+            <h3 class="print-card-question">${field.label}</h3>
             <div class="print-card-value">${formatValue(field.value)}</div>
           </div>
         `;
