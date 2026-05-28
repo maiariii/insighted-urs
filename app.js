@@ -487,7 +487,11 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     printContainer.innerHTML = html;
-    window.print();
+    
+    // Allow the browser layout engine to paint the DOM changes before invoking print
+    setTimeout(() => {
+      window.print();
+    }, 150);
   });
 
   // Reset to Landing Page when clicking logo brand
