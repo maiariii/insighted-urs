@@ -1187,6 +1187,12 @@ body {
     display: block !important;
   }
 
+  html {
+    background: #ffffff !important;
+    height: auto !important;
+    overflow: visible !important;
+  }
+
   @page {
     margin: 1.5cm;
   }
@@ -1250,15 +1256,7 @@ body {
   }
 
   .print-grid {
-    display: grid !important;
-    grid-template-columns: 1fr 1fr !important;
-    gap: 20px !important;
-  }
-
-  @media (max-width: 600px) {
-    .print-grid {
-      grid-template-columns: 1fr !important;
-    }
+    display: block !important;
   }
 
   .print-card {
@@ -1267,6 +1265,7 @@ body {
     padding: 20px !important;
     background: #ffffff !important;
     page-break-inside: avoid !important;
+    margin-bottom: 20px !important;
     box-shadow: none !important;
   }
 
