@@ -3,6 +3,7 @@ window.projectsData = [
     id: "nosca-tracker",
     title: "NOSCA ISSUANCE TRACKER",
     submitter: "noverose.dadole@deped.gov.ph",
+    timestamp: "2026-05-28 14:32:10",
     purpose: "CO monitoring of the NOSCA issuance of DBM to DepEd field offices and IUs",
     categories: {
       overview: [
@@ -161,6 +162,7 @@ window.projectsData = [
     id: "siif-monitoring",
     title: "School Innovation and Improvement Fund (SIIF) Online Monitoring through InsightED",
     submitter: "melanie.villareal@deped.gov.ph",
+    timestamp: "2026-05-27 09:15:44",
     purpose: "To efficiently document approved school‑level interventions, track physical and financial implementation, and generate evidence to support continuous improvement.",
     categories: {
       overview: [

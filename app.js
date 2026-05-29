@@ -22,6 +22,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const workspaceTitle = document.getElementById("workspaceTitle");
   const workspacePurpose = document.getElementById("workspacePurpose");
   const workspaceSubmitter = document.getElementById("workspaceSubmitter");
+  const workspaceTimestamp = document.getElementById("workspaceTimestamp");
   
   const tabNav = document.getElementById("tabNav");
   const requirementSearchInput = document.getElementById("requirementSearch");
@@ -153,6 +154,7 @@ document.addEventListener("DOMContentLoaded", () => {
         id: id,
         title: title,
         submitter: row[1] ? row[1].trim() : "Unknown Submitter",
+        timestamp: row[0] ? row[0].trim() : "n/a",
         purpose: row[3] ? row[3].trim() : "No purpose provided.",
         categories: {
           overview: [
@@ -322,6 +324,9 @@ document.addEventListener("DOMContentLoaded", () => {
     workspaceTitle.textContent = project.title;
     workspacePurpose.textContent = project.purpose;
     workspaceSubmitter.textContent = project.submitter;
+    if (workspaceTimestamp) {
+      workspaceTimestamp.textContent = project.timestamp || "n/a";
+    }
 
     // Reset searching and tab to Overview
     reqSearchQuery = "";
@@ -443,14 +448,33 @@ document.addEventListener("DOMContentLoaded", () => {
     };
 
     let html = `
+      <!-- Brand & Document Info Header -->
+      <div class="print-document-header">
+        <div class="print-brand">
+          <span class="print-brand-icon">🎓</span>
+          <span class="print-logo-text">InsightED URS Explorer</span>
+          <span class="print-doc-tag">SYSTEM SPECIFICATION REPORT</span>
+        </div>
+        <div class="print-doc-date">Generated: ${new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}</div>
+      </div>
+
       <div class="print-header">
         <h1 class="print-title">${project.title}</h1>
-        <div class="print-meta">
-          <strong>Submitted by:</strong> ${project.submitter}
+        
+        <div class="print-meta-grid">
+          <div class="print-meta-item">
+            <span class="print-meta-label">Submitted By:</span>
+            <span class="print-meta-value">${project.submitter}</span>
+          </div>
+          <div class="print-meta-item">
+            <span class="print-meta-label">Submission Date:</span>
+            <span class="print-meta-value">${project.timestamp || "n/a"}</span>
+          </div>
         </div>
+
         <div class="print-purpose">
-          <strong>Purpose & Scope of the Project:</strong><br>
-          <p>${project.purpose}</p>
+          <span class="print-purpose-label">Purpose & Scope of the Project</span>
+          <p class="print-purpose-desc">${project.purpose}</p>
         </div>
       </div>
     `;
